@@ -6,6 +6,8 @@ public interface UrlDao {
 
 	void storeUrl(String shortCode, String url);
 
-	String generateShortCode(String url);
+	String generateShortCode();
+
+	String getShortCodeForUrl(String url);
 
 }

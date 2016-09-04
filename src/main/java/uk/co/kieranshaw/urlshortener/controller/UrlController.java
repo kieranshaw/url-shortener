@@ -28,20 +28,20 @@ public class UrlController {
 	@ResponseBody
 	public String shorten(@RequestParam(name = "shorten") String url, UriComponentsBuilder uriBuilder) {
 		String shortCode = service.storeUrl(url);
-		String shortCodeUrl = uriBuilder.replacePath(shortCode).build().toString();
+		String shortCodeUrl = uriBuilder.replacePath(shortCode).replaceQuery("").build().toString();
 		return shortCodeUrl;
 	}
 
 	@GetMapping("/{shortCode}")
 	@ResponseStatus(code = HttpStatus.TEMPORARY_REDIRECT)
-	public ModelAndView redirectToUrl(@PathVariable(value = "shortCode") String shortCode) {
+	public ModelAndView redirectToUrl(@PathVariable(value = "shortCode") String shortCode) throws NotFoundException {
 		String url = service.getUrl(shortCode);
 		return new ModelAndView("redirect:" + url);
 	}
 
 	@GetMapping("/{shortCode}+")
 	@ResponseBody
-	public String getUrl(@PathVariable(value = "shortCode") String shortCode) {
+	public String getUrl(@PathVariable(value = "shortCode") String shortCode) throws NotFoundException {
 		return service.getUrl(shortCode);
 	}
 

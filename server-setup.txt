@@ -1,0 +1,12 @@
+sudo apt-add-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+mkdir apps
+mkdir apps/urlshortener
+mkdir .aws
+# exit - copy over credentials and jar file
+cd apps/urlshortener/
+ln -s url-shortener-1.0.0-SNAPSHOT.jar url-shortener.jar
+sudo ln -s ~/apps/urlshortener/url-shortener.jar /etc/init.d/url-shortener
+sudo service url-shortener start
+sudo update-rc.d url-shortener defaults
