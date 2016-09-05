@@ -1,6 +1,9 @@
 package uk.co.kieranshaw.urlshortener.controller;
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -26,7 +29,14 @@ public class UrlController {
 
 	@GetMapping("/")
 	@ResponseBody
-	public String shorten(@RequestParam(name = "shorten") String url, UriComponentsBuilder uriBuilder) {
+	public String shorten(@RequestParam(name = "shorten") String url, UriComponentsBuilder uriBuilder) throws InvalidUrlException {
+		
+		try {
+			new URL(url);
+		} catch (MalformedURLException e) {
+			throw new InvalidUrlException();
+		}
+		
 		String shortCode = service.storeUrl(url);
 		String shortCodeUrl = uriBuilder.replacePath(shortCode).replaceQuery("").build().toString();
 		return shortCodeUrl;

@@ -35,11 +35,17 @@ public class UrlControllerTest {
 	}
 
 	@Test
-	public void shorten_withValidShortCode_ReturnsUrl() throws Exception {
+	public void shorten_withValidUrl_ReturnsUrl() throws Exception {
 		when(service.storeUrl(URL)).thenReturn(SHORT_CODE);
 		UriComponentsBuilder uriComponents = UriComponentsBuilder.fromUriString("http://localhost/?shorten=");
 		String shortCodeUrl = controller.shorten(URL, uriComponents);
 		assertEquals("http://localhost/" + SHORT_CODE, shortCodeUrl);
+	}
+	
+	@Test(expected = InvalidUrlException.class)
+	public void shorten_withInvalidUrl_ThrowsException() throws Exception {
+		UriComponentsBuilder uriComponents = UriComponentsBuilder.fromUriString("http://localhost/?shorten=");
+		controller.shorten("bad url", uriComponents);
 	}
 
 	@Test
